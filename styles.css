@@ -342,6 +342,8 @@ a.cite:hover { color: var(--text-2); border-color: var(--text-3); }
 }
 .nav__link:hover { color: var(--text); }
 .nav__link:hover::after { transform: scaleX(1); }
+.nav__link--active { color: var(--text); }
+.nav__link--active::after { transform: scaleX(1); }
 
 .header__cta { font-size: 0.85rem; padding: 0.6rem 1.25rem; }
 
