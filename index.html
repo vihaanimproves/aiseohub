@@ -50,42 +50,133 @@
 
   <main id="main-content">
 
-    <section class="hero" aria-labelledby="heroHeadline">
+    <!-- AI SEARCH DEMO — NEW HERO -->
+    <section class="ai-demo ai-demo--hero" id="ai-demo" aria-labelledby="aiDemoHeading">
       <div class="hero__bg" aria-hidden="true">
         <div class="hero__grid"></div>
         <div class="hero__glow hero__glow--1"></div>
         <div class="hero__glow hero__glow--2"></div>
       </div>
       <div class="container">
-        <div class="hero__content">
-          <span class="eyebrow reveal">A new search layer is forming. Most businesses haven't noticed yet.</span>
-          <h1 class="hero__headline reveal reveal--delay-1" id="heroHeadline">
-            Your customers are asking AI<br />
-            where to find a
-            <span class="text-cycle" aria-live="polite" aria-atomic="true">dentist</span>.<br/>
-            <em>Are you in the answer?</em>
-          </h1>
-          <p class="hero__sub reveal reveal--delay-2">
-            ChatGPT, Gemini, and Perplexity are answering millions of local business queries
-            every day — recommending specific businesses by name. The criteria for appearing
-            are different from Google. Most businesses don't know this channel exists,
-            let alone how they appear in it.
-          </p>
-          <div class="hero__actions reveal reveal--delay-3">
-            <a href="prebook.html" class="btn btn--primary btn--large">
-              Register for Early Access
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </a>
-            <a href="#why-now" class="btn--ghost">See the data ↓</a>
+        <div class="ai-demo__hero-layout">
+
+          <!-- Left: headline + CTA -->
+          <div class="ai-demo__hero-copy">
+            <span class="eyebrow reveal">Generative Engine Optimization · AI Search Visibility for Local Businesses</span>
+            <h1 class="ai-demo__headline reveal reveal--delay-1" id="aiDemoHeading">
+              Your customers are asking<br/>ChatGPT where to find
+              <span class="ai-demo__nowrap">a <span class="text-cycle" aria-live="polite" aria-atomic="true">dentist</span>.</span><br/>
+              <em>Are you in the answer?</em>
+            </h1>
+            <p class="ai-demo__sub reveal reveal--delay-2">
+              ChatGPT, Gemini, and Perplexity recommend specific businesses by name — to millions of users, every day. One brand gets cited. The rest disappear. The criteria for AI search visibility are entirely different from Google's, and most local businesses don't know this channel exists, let alone how they appear in it.
+            </p>
+            <div class="hero__actions reveal reveal--delay-3">
+              <a href="prebook.html" class="btn btn--primary btn--large">
+                Register for Early Access
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+              <a href="#why-now" class="btn--ghost">See the data ↓</a>
+            </div>
+            <div class="hero__trust reveal reveal--delay-4">
+              <span>No commitment</span>
+              <span>·</span>
+              <span>First 5 businesses free</span>
+              <span>·</span>
+              <span>Honest findings, no matter what</span>
+            </div>
           </div>
-          <div class="hero__trust reveal reveal--delay-4">
-            <span>No commitment</span>
-            <span>·</span>
-            <span>First 5 businesses free</span>
-            <span>·</span>
-            <span>Honest findings, no matter what</span>
-          </div>
-        </div>
+
+          <!-- Right: live demo frame -->
+          <div class="ai-demo__hero-frame reveal reveal--delay-2">
+            <div class="ai-demo__wrapper">
+              <!-- Browser chrome -->
+              <div class="ai-demo__chrome" aria-hidden="true">
+                <div class="ai-demo__chrome-dots">
+                  <span></span><span></span><span></span>
+                </div>
+                <div class="ai-demo__chrome-bar">
+                  <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M5 1a4 4 0 100 8A4 4 0 005 1zM11 11l-2.5-2.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                  <span>chat.openai.com</span>
+                </div>
+              </div>
+
+              <!-- Chat window -->
+              <div class="ai-demo__chat" id="aiDemoChat">
+
+                <!-- User message -->
+                <div class="ai-demo__msg ai-demo__msg--user" id="aiDemoUserMsg">
+                  <div class="ai-demo__avatar ai-demo__avatar--user">You</div>
+                  <div class="ai-demo__bubble">
+                    <span id="aiDemoTyped"></span><span class="ai-demo__caret" id="aiDemoCaret"></span>
+                  </div>
+                </div>
+
+                <!-- AI thinking dots -->
+                <div class="ai-demo__thinking" id="aiDemoThinking" aria-hidden="true">
+                  <div class="ai-demo__avatar ai-demo__avatar--ai">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+                  </div>
+                  <div class="ai-demo__dots"><span></span><span></span><span></span></div>
+                </div>
+
+                <!-- AI response + results -->
+                <div class="ai-demo__response" id="aiDemoResponse" aria-live="polite">
+                  <div class="ai-demo__avatar ai-demo__avatar--ai">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+                  </div>
+                  <div class="ai-demo__response-body">
+                    <p class="ai-demo__response-intro" id="aiDemoIntro">Here are the top skincare products for acne I'd recommend:</p>
+                    <div class="ai-demo__results" id="aiDemoResults">
+
+                      <!-- Result 1 — blurred -->
+                      <div class="ai-demo__result ai-demo__result--blurred" data-idx="0">
+                        <span class="ai-demo__result-rank">1</span>
+                        <div class="ai-demo__result-content">
+                          <div class="ai-demo__result-name">████████ Skincare</div>
+                          <div class="ai-demo__result-desc">██████████ clear skin formula ████ dermatologist approved ████</div>
+                        </div>
+                      </div>
+
+                      <!-- Result 2 — FEATURED -->
+                      <div class="ai-demo__result ai-demo__result--featured" data-idx="1">
+                        <span class="ai-demo__result-rank ai-demo__result-rank--star">✦</span>
+                        <div class="ai-demo__result-content">
+                          <div class="ai-demo__result-name">This could be you</div>
+                          <div class="ai-demo__result-desc">Your brand, recommended to every customer asking this question</div>
+                        </div>
+                        <span class="ai-demo__result-pill">Top Result</span>
+                      </div>
+
+                      <!-- Result 3 — blurred -->
+                      <div class="ai-demo__result ai-demo__result--blurred" data-idx="2">
+                        <span class="ai-demo__result-rank">3</span>
+                        <div class="ai-demo__result-content">
+                          <div class="ai-demo__result-name">████ Derm Labs</div>
+                          <div class="ai-demo__result-desc">███████████ gentle formula ████ no-irritants ████████</div>
+                        </div>
+                      </div>
+
+                      <!-- Result 4 — blurred -->
+                      <div class="ai-demo__result ai-demo__result--blurred" data-idx="3">
+                        <span class="ai-demo__result-rank">4</span>
+                        <div class="ai-demo__result-content">
+                          <div class="ai-demo__result-name">████████ Beauty Co.</div>
+                          <div class="ai-demo__result-desc">███ solution ████ salicylic ████████ 30-day results</div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+              </div><!-- /.ai-demo__chat -->
+            </div><!-- /.ai-demo__wrapper -->
+          </div><!-- /.ai-demo__hero-frame -->
+
+        </div><!-- /.ai-demo__hero-layout -->
       </div>
     </section>
 

@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initSpotsSync();
   initNavToggle();
   initSmoothScroll();
+  initAiDemo();
 });
 
 /* ── URGENCY BAR ─────────────────────────────── */
@@ -475,4 +476,144 @@ function initFAQPage() {
 
     noResults.hidden = true;
   }
+}
+
+/* ── AI DEMO ANIMATION ────────────────────────── */
+function initAiDemo() {
+  const typedEl  = $('#aiDemoTyped');
+  const caret    = $('#aiDemoCaret');
+  const thinking = $('#aiDemoThinking');
+  const response = $('#aiDemoResponse');
+  const introEl  = $('#aiDemoIntro');
+  const results  = $$('.ai-demo__result');
+  const section  = $('.ai-demo--hero');
+  if (!typedEl || !section) return;
+
+  // Query / intro pairs that cycle
+  const QUERIES = [
+    { q: 'Please suggest me the best skincare for my acne',   i: "Here are the top skincare products for acne I'd recommend:" },
+    { q: 'Best dermatologist-approved face wash in Mumbai?',  i: 'Based on dermatologist recommendations, here are top picks:' },
+    { q: 'What moisturiser works for sensitive oily skin?',   i: 'Here are the moisturisers best suited for sensitive oily skin:' },
+    { q: 'Recommend a good sunscreen for Indian skin tone',   i: 'These sunscreens work best for Indian skin tones:' },
+    { q: 'Top-rated serum for dark spots and pigmentation',   i: 'Here are the most effective serums for dark spots:' },
+    { q: 'Best budget skincare routine for beginners?',       i: "Here's a beginner-friendly skincare routine with top picks:" },
+  ];
+
+  // 15% speedup: all base ms values are multiplied by 0.85 before setTimeout
+  const S        = 0.85;
+  let queryIndex = 0;
+  let timers     = [];
+  let started    = false;
+
+  function defer(fn, ms) {
+    const id = setTimeout(fn, Math.round(ms * S));
+    timers.push(id);
+  }
+
+  // Human-like typing: slower at word boundaries, faster inside words
+  function typeText(text, onDone) {
+    let i = 0;
+    function nextMs(ch, prev) {
+      if (ch === ' ')          return 62 + Math.random() * 38;
+      if ('?!.,'.includes(ch)) return 88 + Math.random() * 55;
+      if (prev === ' ')        return 50 + Math.random() * 28;
+      return 26 + Math.random() * 18;
+    }
+    function tick() {
+      if (i < text.length) {
+        typedEl.textContent += text[i];
+        const ms = nextMs(text[i], i > 0 ? text[i - 1] : '');
+        i++;
+        setTimeout(tick, Math.round(ms * S));
+      } else {
+        onDone();
+      }
+    }
+    setTimeout(tick, 0);
+  }
+
+  // Backspace erase
+  function eraseText(onDone) {
+    function tick() {
+      const t = typedEl.textContent;
+      if (t.length > 0) {
+        typedEl.textContent = t.slice(0, -1);
+        setTimeout(tick, Math.round((18 + Math.random() * 12) * S));
+      } else {
+        onDone();
+      }
+    }
+    setTimeout(tick, 0);
+  }
+
+  // ── Phase 1: run once on page load ───────────
+  function runIntro() {
+    const first = QUERIES[queryIndex];
+    queryIndex  = (queryIndex + 1) % QUERIES.length;
+
+    defer(() => {
+      typeText(first.q, () => {
+        caret.classList.add('is-hidden');
+        defer(() => {
+          thinking.classList.add('is-visible');
+          defer(() => {
+            thinking.classList.remove('is-visible');
+            defer(() => {
+              response.classList.add('is-visible');
+              // stagger cards in
+              results.forEach((card, i) => {
+                defer(() => card.classList.add('is-shown'), i * 145);
+              });
+              // once all cards shown, switch to cycling mode
+              defer(() => {
+                started = true;
+                caret.classList.remove('is-hidden');
+                cycleQuery();
+              }, results.length * 145 + 510);
+            }, 85);   // tiny gap before response appears
+          }, 1360);   // thinking dot duration
+        }, 272);      // pause after typing → before thinking
+      });
+    }, 425);          // initial pause
+  }
+
+  // ── Phase 2: cycle questions, results stay visible ──
+  function cycleQuery() {
+    const entry = QUERIES[queryIndex];
+    queryIndex  = (queryIndex + 1) % QUERIES.length;
+
+    eraseText(() => {
+      defer(() => {
+        typeText(entry.q, () => {
+          caret.classList.add('is-hidden');
+          defer(() => {
+            thinking.classList.add('is-visible');
+            defer(() => {
+              thinking.classList.remove('is-visible');
+              // cross-fade the intro line
+              defer(() => {
+                introEl.classList.add('is-fading');
+                defer(() => {
+                  introEl.textContent = entry.i;
+                  introEl.classList.remove('is-fading');
+                  caret.classList.remove('is-hidden');
+                  // hold, then next cycle
+                  defer(cycleQuery, 3400);
+                }, 210);
+              }, 75);
+            }, 1360);   // thinking duration
+          }, 272);      // pause after typing
+        });
+      }, 290);          // gap between erase finish and next type
+    });
+  }
+
+  // Kick off when section enters viewport
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting && timers.length === 0) runIntro();
+    });
+  }, { threshold: 0.1 });
+
+  io.observe(section);
 }
