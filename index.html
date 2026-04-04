@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <div id="pageTransition" aria-hidden="true"></div>
 
   <div class="urgency-bar" id="urgencyBar" role="alert" aria-live="polite">
     <div class="urgency-bar__inner">
@@ -38,10 +39,9 @@
       </button>
       <nav class="header__nav" id="mainNav" role="navigation" aria-label="Main navigation">
         <ul class="nav__list">
-          <li><a href="#why-now"     class="nav__link">The Data</a></li>
-          <li><a href="#what-is-geo" class="nav__link">What Is GEO</a></li>
-          <li><a href="about.html"   class="nav__link">About</a></li>
-          <li><a href="faq.html"     class="nav__link">FAQ</a></li>
+          <li><a href="#why-now"   class="nav__link">The Data</a></li>
+          <li><a href="about.html" class="nav__link">About</a></li>
+          <li><a href="faq.html"   class="nav__link">FAQ</a></li>
         </ul>
       </nav>
       <a href="prebook.html" class="btn btn--primary header__cta">Get Early Access</a>
@@ -79,13 +79,6 @@
                 </svg>
               </a>
               <a href="#why-now" class="btn--ghost">See the data ↓</a>
-            </div>
-            <div class="hero__trust reveal reveal--delay-4">
-              <span>No commitment</span>
-              <span>·</span>
-              <span>First 5 businesses free</span>
-              <span>·</span>
-              <span>Honest findings, no matter what</span>
             </div>
           </div>
 
@@ -277,17 +270,17 @@
 
         <div class="problem__cards">
           <article class="problem-card reveal">
-            <div class="problem-card__icon" aria-hidden="true">🔄</div>
+            
             <h3 class="problem-card__title">A new discovery layer sits above conventional search</h3>
             <p class="problem-card__body">AI tools don't rank pages — they synthesise answers and cite sources. The businesses that appear are the ones that have built authority in the sources AI models trust. It's a different game from SEO, running in parallel right now.</p>
           </article>
           <article class="problem-card reveal reveal--delay-1">
-            <div class="problem-card__icon" aria-hidden="true">⏳</div>
+            
             <h3 class="problem-card__title">Early positions in AI search are forming now</h3>
             <p class="problem-card__body">AI models develop citation tendencies based on authority signals they encounter early. Businesses building that presence now will have a position that becomes harder to contest as the channel matures.</p>
           </article>
           <article class="problem-card reveal reveal--delay-2">
-            <div class="problem-card__icon" aria-hidden="true">🔦</div>
+            
             <h3 class="problem-card__title">Most businesses have no idea where they stand</h3>
             <p class="problem-card__body">There's no dashboard, no alert for AI visibility. Right now a competitor may be recommended every time someone asks an AI tool a question that's directly relevant to your business. Most owners have never checked.</p>
           </article>
@@ -332,15 +325,15 @@
 
     <section class="offer" id="offer" aria-labelledby="offerHeading">
       <div class="container">
-        <span class="section-label reveal">Early Access</span>
-        <h2 class="offer__headline reveal reveal--delay-1" id="offerHeading">
-          We're taking our first 5<br/>businesses for free.
-        </h2>
-        <p class="offer__sub reveal reveal--delay-2">
-          We're early. We want to do this work on real businesses before we formalise anything. The first 5 to register get a full AI visibility audit — no charge, no contract, no obligation on either side.
-        </p>
         <div class="offer__free-layout">
           <div class="offer__free-left reveal">
+            <span class="section-label">Early Access</span>
+            <h2 class="offer__headline" id="offerHeading">
+              We're taking our first 5<br/>businesses for free.
+            </h2>
+            <p class="offer__sub">
+              We're early. We want to do this work on real businesses before we formalise anything. The first 5 to register get a full AI visibility audit — no charge, no contract, no obligation on either side.
+            </p>
             <h3 class="offer__free-title">What the audit covers</h3>
             <ul class="offer__free-list">
               <li><svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="9" stroke="white" stroke-width="1.5"/><path d="M6 10l3 3 5-5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>How your business currently appears across ChatGPT, Gemini &amp; Perplexity</li>
