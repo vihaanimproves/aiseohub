@@ -9,6 +9,7 @@ const $ = (s, ctx = document) => ctx.querySelector(s);
 const $$ = (s, ctx = document) => [...ctx.querySelectorAll(s)];
 
 document.addEventListener('DOMContentLoaded', () => {
+  initPageTransitions();
   initUrgencyBar();
   initHeader();
   initScrollReveal();
@@ -21,6 +22,58 @@ document.addEventListener('DOMContentLoaded', () => {
   initSmoothScroll();
   initAiDemo();
 });
+
+/* ── PAGE TRANSITIONS ────────────────────────── */
+function initPageTransitions() {
+  const overlay = document.getElementById('pageTransition');
+  if (!overlay) return;
+
+  // Fade in: remove the covering overlay shortly after paint
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      overlay.classList.add('is-hidden');
+    });
+  });
+
+  // Fade out on any internal page navigation
+  document.addEventListener('click', e => {
+    const link = e.target.closest('a[href]');
+    if (!link) return;
+
+    const href = link.getAttribute('href');
+    if (!href) return;
+
+    // Skip: hash-only links, external links, mailto/tel, and new-tab links
+    const isHash     = href.startsWith('#');
+    const isExternal = href.startsWith('http') && !href.includes(location.hostname);
+    const isSpecial  = href.startsWith('mailto:') || href.startsWith('tel:');
+    const isNewTab   = link.target === '_blank' || e.metaKey || e.ctrlKey || e.shiftKey;
+
+    if (isHash || isExternal || isSpecial || isNewTab) return;
+
+    e.preventDefault();
+
+    // Show overlay (fade to black)
+    overlay.classList.remove('is-hidden');
+
+    // Navigate after the fade completes
+    setTimeout(() => {
+      window.location.href = href;
+    }, 400);
+  });
+
+  // Handle browser back/forward — fade in on pageshow (bfcache)
+  window.addEventListener('pageshow', e => {
+    if (e.persisted) {
+      overlay.classList.remove('is-hidden');
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          overlay.classList.add('is-hidden');
+        });
+      });
+    }
+  });
+}
 
 /* ── URGENCY BAR ─────────────────────────────── */
 function initUrgencyBar() {
