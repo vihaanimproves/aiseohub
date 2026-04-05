@@ -9,7 +9,6 @@ const $ = (s, ctx = document) => ctx.querySelector(s);
 const $$ = (s, ctx = document) => [...ctx.querySelectorAll(s)];
 
 document.addEventListener('DOMContentLoaded', () => {
-  initPageTransitions();
   initUrgencyBar();
   initHeader();
   initScrollReveal();
@@ -22,59 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initSmoothScroll();
   initAiDemo();
 });
-
-/* ── PAGE TRANSITIONS ────────────────────────── */
-function initPageTransitions() {
-  const overlay = document.getElementById('pageTransition');
-  if (!overlay) return;
-
-  // Fade in: remove the covering overlay shortly after paint
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      overlay.classList.add('is-hidden');
-    });
-  });
-
-  // Fade out on any internal page navigation
-  document.addEventListener('click', e => {
-    const link = e.target.closest('a[href]');
-    if (!link) return;
-
-    const href = link.getAttribute('href');
-    if (!href) return;
-
-    // Skip: hash-only links, external links, mailto/tel, and new-tab links
-    const isHash     = href.startsWith('#');
-    const isExternal = href.startsWith('http') && !href.includes(location.hostname);
-    const isSpecial  = href.startsWith('mailto:') || href.startsWith('tel:');
-    const isNewTab   = link.target === '_blank' || e.metaKey || e.ctrlKey || e.shiftKey;
-
-    if (isHash || isExternal || isSpecial || isNewTab) return;
-
-    e.preventDefault();
-
-    // Show overlay (fade to black)
-    overlay.classList.remove('is-hidden');
-
-    // Navigate after the fade completes
-    setTimeout(() => {
-      window.location.href = href;
-    }, 400);
-  });
-
-  // Also handle browser back/forward — fade in on pageshow
-  window.addEventListener('pageshow', e => {
-    if (e.persisted) {
-      // Page was served from bfcache — fade it back in
-      overlay.classList.remove('is-hidden');
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          overlay.classList.add('is-hidden');
-        });
-      });
-    }
-  });
-}
 
 /* ── URGENCY BAR ─────────────────────────────── */
 function initUrgencyBar() {
@@ -326,7 +272,7 @@ function initPrebookForm() {
   }
 
   // ── Submit ────────────────────────────────
-  form.addEventListener('submit', e => {
+  form.addEventListener('submit', async e => {
     e.preventDefault();
 
     let valid = true;
@@ -343,49 +289,49 @@ function initPrebookForm() {
     }
 
     if (!valid) {
-      // Scroll to first error
       const firstErr = form.querySelector('.is-error');
       if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
 
-    // ── Save to localStorage ──────────────
-    const data = {
-      fullName:  $('#fullName').value.trim(),
-      phone:     $('#phone').value.trim(),
-      company:   $('#company').value.trim(),
-      email:     $('#email').value.trim(),
-      website:   $('#website').value.trim(),
-      city:      $('#city').value.trim(),
-      category:  $('#category').value,
-      teamSize:  $('#teamSize').value,
-      budget:    $('#budget').value,
-      source:    $('#source').value,
-      challenge: $('#challenge').value.trim(),
-      timestamp: new Date().toISOString(),
-    };
-
-    try {
-      const existing = JSON.parse(localStorage.getItem('aiseohub_leads') || '[]');
-      existing.push(data);
-      localStorage.setItem('aiseohub_leads', JSON.stringify(existing));
-      console.log('Lead saved. Total:', existing.length, data);
-    } catch (err) {
-      console.warn('localStorage unavailable:', err);
-    }
-
-    // ── Show success ──────────────────────
+    // ── Loading state ──────────────────────
+    submitBtn.disabled = true;
     submitBtn.classList.add('is-loading');
+    submitBtn.textContent = 'Submitting…';
 
-    setTimeout(() => {
-      form.style.transition = 'opacity 0.35s ease';
-      form.style.opacity = '0';
-      setTimeout(() => {
-        form.hidden = true;
-        success.hidden = false;
-        success.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 360);
-    }, 600);
+    // ── Submit to Web3Forms ────────────────
+    try {
+      const formData = new FormData(form);
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formData
+      });
+      const result = await response.json();
+
+      if (result.success) {
+        // ── Success ──────────────────────
+        form.style.transition = 'opacity 0.35s ease';
+        form.style.opacity    = '0';
+        setTimeout(() => {
+          form.hidden    = true;
+          success.hidden = false;
+          success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 360);
+      } else {
+        // ── API returned failure ──────────
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('is-loading');
+        submitBtn.innerHTML = 'Submit My Application <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        alert('Something went wrong. Please try again or email us directly.');
+      }
+    } catch (err) {
+      // ── Network error ─────────────────
+      submitBtn.disabled = false;
+      submitBtn.classList.remove('is-loading');
+      submitBtn.innerHTML = 'Submit My Application <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      console.error('Web3Forms error:', err);
+      alert('Network error. Please check your connection and try again.');
+    }
   });
 
   // ── Helpers ───────────────────────────────
