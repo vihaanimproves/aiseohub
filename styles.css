@@ -120,6 +120,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 .reveal.reveal--delay-2 { transition-delay: 0.2s; }
 .reveal.reveal--delay-3 { transition-delay: 0.3s; }
 .reveal.reveal--delay-4 { transition-delay: 0.4s; }
+.reveal.reveal--delay-5 { transition-delay: 0.55s; }
 .reveal.is-visible {
   opacity: 1;
   transform: translateY(0);
@@ -146,7 +147,7 @@ section { padding: var(--space-24) 0; }
 /* ── SHARED LABEL ───────────────────────────── */
 .section-label {
   font-family: var(--font-display);
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -1659,10 +1660,10 @@ a.cite:hover { color: var(--text-2); border-color: var(--text-3); }
   inset: 0;
   pointer-events: none;
 }
-.about-hero__content { max-width: 800px; }
+.about-hero__content { max-width: 100%; }
 
 .about-hero__headline {
-  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-size: clamp(3rem, 6vw, 5.2rem);
   font-weight: 800;
   line-height: 1.07;
   letter-spacing: -0.03em;
@@ -1670,10 +1671,10 @@ a.cite:hover { color: var(--text-2); border-color: var(--text-3); }
   margin-bottom: var(--space-6);
 }
 .about-hero__sub {
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   color: var(--text-2);
-  max-width: 660px;
-  line-height: 1.8;
+  max-width: 100%;
+  line-height: 2;
 }
 
 /* ── Origin ─────────────────────────────── */
@@ -1686,9 +1687,9 @@ a.cite:hover { color: var(--text-2); border-color: var(--text-3); }
   align-items: start;
 }
 .about-origin__headline {
-  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-size: clamp(2.2rem, 4.5vw, 3.4rem);
   color: var(--text);
-  margin-bottom: var(--space-8);
+  margin-bottom: var(--space-12);
 }
 .about-origin__body p {
   font-size: 1.05rem;
@@ -1725,7 +1726,7 @@ a.cite:hover { color: var(--text-2); border-color: var(--text-3); }
   font-size: 2rem;
   font-weight: 800;
   letter-spacing: -0.04em;
-  color: var(--text);
+  color: #ef4444;
   line-height: 1;
   margin-bottom: var(--space-2);
 }
@@ -1739,14 +1740,14 @@ a.cite:hover { color: var(--text-2); border-color: var(--text-3); }
 .about-geo { background: var(--bg-2); border-bottom: 1px solid var(--border); }
 
 .about-geo__headline {
-  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-size: clamp(2.2rem, 4.5vw, 3.4rem);
   color: var(--text);
   margin-bottom: var(--space-4);
 }
 .about-geo__intro {
   font-size: 1.05rem;
   color: var(--text-2);
-  max-width: 640px;
+  max-width: 100%;
   line-height: 1.8;
   margin-bottom: var(--space-12);
 }
@@ -1757,6 +1758,28 @@ a.cite:hover { color: var(--text-2); border-color: var(--text-3); }
   gap: var(--space-6);
   align-items: start;
   margin-bottom: var(--space-12);
+}
+
+/* Single-box unified variant — removes outer borders from cols */
+.geo-compare--unified {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  background: var(--surface);
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: var(--space-12);
+}
+.geo-compare--unified .geo-compare__col {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: var(--space-8) var(--space-8);
+  border-right: none;
+}
+.geo-compare--unified .geo-compare__col:first-child {
+  border-right: 1px solid var(--border-2);
 }
 .geo-compare__col {
   background: var(--surface);
@@ -1833,6 +1856,13 @@ a.cite:hover { color: var(--text-2); border-color: var(--text-3); }
   border-radius: var(--radius);
   padding: var(--space-6) var(--space-8);
 }
+.about-geo__quote--centered {
+  max-width: 860px;
+  margin: 0 auto;
+  text-align: center;
+  border-left: none;
+  border-top: 3px solid rgba(255,255,255,0.25);
+}
 .about-geo__quote p {
   font-size: 1.1rem;
   font-style: italic;
@@ -1844,14 +1874,14 @@ a.cite:hover { color: var(--text-2); border-color: var(--text-3); }
 .about-method { background: var(--bg); border-bottom: 1px solid var(--border); }
 
 .about-method__headline {
-  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-size: clamp(2.2rem, 4.5vw, 3.4rem);
   color: var(--text);
   margin-bottom: var(--space-4);
 }
 .about-method__intro {
   font-size: 1.05rem;
   color: var(--text-2);
-  max-width: 620px;
+  max-width: 100%;
   line-height: 1.8;
   margin-bottom: var(--space-12);
 }
@@ -1871,11 +1901,11 @@ a.cite:hover { color: var(--text-2); border-color: var(--text-3); }
 .method-step:hover { border-color: var(--border-2); }
 
 .method-step__phase {
-  font-size: 0.68rem;
+  font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--text-3);
+  color: #a3e635;
   margin-bottom: var(--space-3);
 }
 .method-step__title {
@@ -1907,7 +1937,7 @@ a.cite:hover { color: var(--text-2); border-color: var(--text-3); }
 .about-values { background: var(--bg-2); border-bottom: 1px solid var(--border); }
 
 .about-values__headline {
-  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-size: clamp(2.2rem, 4.5vw, 3.4rem);
   color: var(--text);
   margin-bottom: var(--space-12);
 }
@@ -1927,11 +1957,11 @@ a.cite:hover { color: var(--text-2); border-color: var(--text-3); }
 .value-card:hover { border-color: var(--border-2); }
 
 .value-card__num {
-  font-size: 0.68rem;
+  font-size: 1rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--text-3);
+  color: #38bdf8;
   margin-bottom: var(--space-4);
 }
 .value-card__title {
@@ -2036,6 +2066,16 @@ a.cite:hover { color: var(--text-2); border-color: var(--text-3); }
   .method-steps { grid-template-columns: 1fr; }
   .values-grid  { grid-template-columns: 1fr; }
   .team-grid    { grid-template-columns: repeat(2, 1fr); }
+  .geo-compare--unified {
+    grid-template-columns: 1fr;
+  }
+  .geo-compare--unified .geo-compare__col {
+    border-right: none;
+    border-bottom: 1px solid var(--border-2);
+  }
+  .geo-compare--unified .geo-compare__col--geo {
+    border-bottom: none;
+  }
 }
 @media (max-width: 640px) {
   .about-hero { padding-top: calc(var(--space-24) + 110px); }
