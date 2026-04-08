@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!--
+    ╔══════════════════════════════════════════════════════╗
+    ║  AIseohub — Hero Component                           ║
+    ║  Self-contained export: header + hero section        ║
+    ║                                                      ║
+    ║  Dependencies (local):                               ║
+    ║    hero.css  — all styles, tokens, animations        ║
+    ║    hero.js   — all interactivity, AI demo animation  ║
+    ║                                                      ║
+    ║  To embed in another page:                           ║
+    ║    1. Link hero.css in <head>                        ║
+    ║    2. Copy urgency-bar, <header>, and <section>      ║
+    ║       blocks into your <body>                        ║
+    ║    3. Link hero.js before </body>                    ║
+    ╚══════════════════════════════════════════════════════╝
+  -->
+
+  <title>Hero Component — AIseohub</title>
+  <link rel="stylesheet" href="hero.css" />
+</head>
+<body>
+
+  <!-- ════════════════════════════════════════════════════
+       COMPONENT: URGENCY BAR
+       Controls: hero.js → initUrgencyBar()
+       State: sessionStorage key "urgencyDismissed"
+  ════════════════════════════════════════════════════ -->
+  <div class="urgency-bar" id="urgencyBar" role="alert" aria-live="polite">
+    <div class="urgency-bar__inner">
+      <span class="urgency-bar__dot" aria-hidden="true"></span>
+      <span>Early access — first <strong><span id="spotsLeft">5</span> businesses</strong> get a free AI visibility audit.</span>
+      <a href="prebook.html" class="urgency-bar__link">Register your interest →</a>
+    </div>
+    <button class="urgency-bar__close" id="closeUrgency" aria-label="Close announcement">✕</button>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════
+       COMPONENT: HEADER
+       Controls: hero.js → initHeader(), initNavToggle()
+       State: .is-scrolled on scroll · .is-open on mobile
+  ════════════════════════════════════════════════════ -->
+  <header class="site-header" id="siteHeader" role="banner">
+    <div class="container">
+
+      <!-- Logo -->
+      <a href="index.html" class="header__logo" aria-label="AIseohub home">
+        <span class="logo__mark" aria-hidden="true"></span>
+        <span class="logo__text">AIseohub</span>
+      </a>
+
+      <!-- Mobile hamburger toggle -->
+      <button class="nav__toggle" id="navToggle"
+              aria-expanded="false" aria-controls="mainNav"
+              aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+
+      <!-- Nav links -->
+      <nav class="header__nav" id="mainNav" role="navigation" aria-label="Main navigation">
+        <ul class="nav__list">
+          <li><a href="#why-now"     class="nav__link">The Data</a></li>
+          <li><a href="#what-is-geo" class="nav__link">What Is GEO</a></li>
+          <li><a href="about.html"   class="nav__link">About</a></li>
+          <li><a href="faq.html"     class="nav__link">FAQ</a></li>
+        </ul>
+      </nav>
+
+      <!-- Primary CTA -->
+      <a href="prebook.html" class="btn btn--primary header__cta">Get Early Access</a>
+
+    </div>
+  </header>
+
+  <!-- ════════════════════════════════════════════════════
+       COMPONENT: HERO SECTION — AI Demo
+       Controls: hero.js → initAiDemo(), initTextCycle(),
+                            initScrollReveal(), initSmoothScroll()
+
+       Key IDs (required by hero.js):
+         #aiDemoTyped    — text node where query is typed
+         #aiDemoCaret    — blinking cursor span
+         #aiDemoThinking — thinking dots row
+         #aiDemoResponse — full AI response block
+         #aiDemoIntro    — intro sentence that cross-fades
+         .ai-demo__result — result cards (×4), stagger-revealed
+         .ai-demo--hero  — IntersectionObserver target
+
+       To change queries: edit QUERIES array in hero.js
+       To change words: edit words array in hero.js → initTextCycle()
+  ════════════════════════════════════════════════════ -->
+  <main id="main-content">
+    <section class="ai-demo ai-demo--hero" id="ai-demo" aria-labelledby="aiDemoHeading">
+
+      <!-- Background decoratives -->
+      <div class="hero__bg" aria-hidden="true">
+        <div class="hero__grid"></div>
+        <div class="hero__glow hero__glow--1"></div>
+        <div class="hero__glow hero__glow--2"></div>
+      </div>
+
+      <div class="container">
+        <div class="ai-demo__hero-layout">
+
+          <!-- ── LEFT: Headline + CTA ─────────────── -->
+          <div class="ai-demo__hero-copy">
+            <span class="eyebrow reveal">
+              Generative Engine Optimization · AI Search Visibility for Local Businesses
+            </span>
+
+            <h1 class="ai-demo__headline reveal reveal--delay-1" id="aiDemoHeading">
+              Your customers are asking<br/>ChatGPT where to find
+              <!--
+                .ai-demo__nowrap: keeps "a dentist." / "a consultant."
+                from ever wrapping across two lines regardless of word length.
+              --><br/>
+              <span class="ai-demo__nowrap">a
+                <span class="text-cycle" aria-live="polite" aria-atomic="true">dentist</span>.
+              </span><br/>
+              <em>Are you in the answer?</em>
+            </h1>
+
+            <p class="ai-demo__sub reveal reveal--delay-2">
+              ChatGPT, Gemini, and Perplexity recommend specific businesses by name —
+              to millions of users, every day. One brand gets cited. The rest disappear.
+              The criteria for AI search visibility are entirely different from Google's,
+              and most local businesses don't know this channel exists, let alone how
+              they appear in it.
+            </p>
+
+            <div class="hero__actions reveal reveal--delay-3">
+              <a href="prebook.html" class="btn btn--primary btn--large">
+                Register for Early Access
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M3 8H13M13 8L9 4M13 8L9 12"
+                        stroke="currentColor" stroke-width="1.5"
+                        stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+              <a href="#why-now" class="btn--ghost">See the data ↓</a>
+            </div>
+          </div>
+
+          <!-- ── RIGHT: ChatGPT Demo Frame ──────────── -->
+          <div class="ai-demo__hero-frame reveal reveal--delay-2">
+            <div class="ai-demo__wrapper">
+
+              <!-- macOS-style browser chrome bar -->
+              <div class="ai-demo__chrome" aria-hidden="true">
+                <div class="ai-demo__chrome-dots">
+                  <span></span><span></span><span></span>
+                </div>
+                <div class="ai-demo__chrome-bar">
+                  <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+                    <path d="M5 1a4 4 0 100 8A4 4 0 005 1zM11 11l-2.5-2.5"
+                          stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                  </svg>
+                  <span>chat.openai.com</span>
+                </div>
+              </div>
+
+              <!-- Chat area -->
+              <div class="ai-demo__chat" id="aiDemoChat">
+
+                <!-- User message — query typed here by JS -->
+                <div class="ai-demo__msg ai-demo__msg--user" id="aiDemoUserMsg">
+                  <div class="ai-demo__avatar ai-demo__avatar--user">You</div>
+                  <div class="ai-demo__bubble">
+                    <span id="aiDemoTyped"></span>
+                    <span class="ai-demo__caret" id="aiDemoCaret"></span>
+                  </div>
+                </div>
+
+                <!-- Thinking dots — shown while "AI processes" -->
+                <div class="ai-demo__thinking" id="aiDemoThinking" aria-hidden="true">
+                  <div class="ai-demo__avatar ai-demo__avatar--ai">
+                    <svg width="13" height="13" viewBox="0 0 24 24"
+                         fill="none" stroke="currentColor" stroke-width="2">
+                      <circle cx="12" cy="12" r="10"/>
+                      <path d="M12 8v4l3 3"/>
+                    </svg>
+                  </div>
+                  <div class="ai-demo__dots">
+                    <span></span><span></span><span></span>
+                  </div>
+                </div>
+
+                <!-- AI response — revealed after thinking -->
+                <div class="ai-demo__response" id="aiDemoResponse" aria-live="polite">
+                  <div class="ai-demo__avatar ai-demo__avatar--ai">
+                    <svg width="13" height="13" viewBox="0 0 24 24"
+                         fill="none" stroke="currentColor" stroke-width="2">
+                      <circle cx="12" cy="12" r="10"/>
+                      <path d="M12 8v4l3 3"/>
+                    </svg>
+                  </div>
+                  <div class="ai-demo__response-body">
+
+                    <!-- Intro sentence — cross-fades on each new query -->
+                    <p class="ai-demo__response-intro" id="aiDemoIntro">
+                      Here are the top skincare products for acne I'd recommend:
+                    </p>
+
+                    <!-- Result cards — stagger in then stay visible -->
+                    <div class="ai-demo__results" id="aiDemoResults">
+
+                      <!-- Result 1 — competitor (blurred) -->
+                      <div class="ai-demo__result ai-demo__result--blurred" data-idx="0">
+                        <span class="ai-demo__result-rank">1</span>
+                        <div class="ai-demo__result-content">
+                          <div class="ai-demo__result-name">████████ Skincare</div>
+                          <div class="ai-demo__result-desc">██████████ clear skin formula ████ dermatologist approved ████</div>
+                        </div>
+                      </div>
+
+                      <!-- Result 2 — YOU (featured, pulses) -->
+                      <div class="ai-demo__result ai-demo__result--featured" data-idx="1">
+                        <span class="ai-demo__result-rank ai-demo__result-rank--star">✦</span>
+                        <div class="ai-demo__result-content">
+                          <div class="ai-demo__result-name">This could be you</div>
+                          <div class="ai-demo__result-desc">Your brand, recommended to every customer asking this question</div>
+                        </div>
+                        <span class="ai-demo__result-pill">Top Result</span>
+                      </div>
+
+                      <!-- Result 3 — competitor (blurred) -->
+                      <div class="ai-demo__result ai-demo__result--blurred" data-idx="2">
+                        <span class="ai-demo__result-rank">3</span>
+                        <div class="ai-demo__result-content">
+                          <div class="ai-demo__result-name">████ Derm Labs</div>
+                          <div class="ai-demo__result-desc">███████████ gentle formula ████ no-irritants ████████</div>
+                        </div>
+                      </div>
+
+                      <!-- Result 4 — competitor (blurred) -->
+                      <div class="ai-demo__result ai-demo__result--blurred" data-idx="3">
+                        <span class="ai-demo__result-rank">4</span>
+                        <div class="ai-demo__result-content">
+                          <div class="ai-demo__result-name">████████ Beauty Co.</div>
+                          <div class="ai-demo__result-desc">███ solution ████ salicylic ████████ 30-day results</div>
+                        </div>
+                      </div>
+
+                      <!-- Result 5 — competitor (blurred) -->
+                      <div class="ai-demo__result ai-demo__result--blurred" data-idx="4">
+                        <span class="ai-demo__result-rank">5</span>
+                        <div class="ai-demo__result-content">
+                          <div class="ai-demo__result-name">██████ Wellness Co.</div>
+                          <div class="ai-demo__result-desc">████ natural extracts ████████ clinically tested ███</div>
+                        </div>
+                      </div>
+
+                    </div><!-- /.ai-demo__results -->
+                  </div><!-- /.ai-demo__response-body -->
+                </div><!-- /.ai-demo__response -->
+
+              </div><!-- /.ai-demo__chat -->
+            </div><!-- /.ai-demo__wrapper -->
+          </div><!-- /.ai-demo__hero-frame -->
+
+        </div><!-- /.ai-demo__hero-layout -->
+      </div><!-- /.container -->
+    </section>
+  </main>
+
+  <script src="hero.js"></script>
+</body>
+</html>
